@@ -320,5 +320,73 @@ coverage xml file_or_module or coverage xml -o /tmp/coverage.xml
 
 This will place a file called coverage.xml in the local folder.
 
+I had to add a plugin to my Jenkins env, again you should only need to do this once.
+
+But add the Plugin called **Cobertura**
+
+We generate out xml data using (in the Jenkins Build)
+
+```bash
+coverage xml -o $WORKSPACE/coverage.xml
+```
+
+So now Add a new **Post-Build** task, and set it up like this.
+
+![](./img/jenkins_coverage.png)
+
+We now rebuild the project - and click on reports. And we can see Coverage.
+
+This data is also available on the project screen.
+
+![](./img/jenkins_test_coverage.png)
+
+We now have tests and coverage.
 
 
+# Code Recap
+
+In case you have become a little confused this is the boiled down version.
+
+
+## Build Steps
+
+Place this in a Build Box
+
+```bash
+PROJECT="MySimpleModule"
+
+
+rm -Rf ~/Builds/$PROJECT
+CODE_HOME=~/Builds/$PROJECT/code
+PYENV_HOME=~/Builds/$PROJECT/python
+export PYENV_HOME
+
+echo "Creating new Python env"
+/usr/local/bin/virtualenv  $PYENV_HOME
+source $PYENV_HOME/bin/activate
+
+echo "Get Project"
+mkdir -p $CODE_HOME
+cd $CODE_HOME
+pip install --upgrade pip
+
+git clone https://github.com/timseed/$PROJECT msm
+cd msm
+pip install -r requirements.txt
+python setup.py install
+
+nosetests --with-xunit --all-modules \
+          --traverse-namespace --with-coverage \
+          $PROJECT/test/nosetests.py \
+          --cover-inclusive \
+          --xunit-file=$WORKSPACE/nosetests.xml
+coverage xml -o $WORKSPACE/coverage.xml
+```
+
+
+You now need 2 post actions they should look like this
+
+![](./img/jenkins_post_actions.png)
+
+
+Good luck and happy testing.
