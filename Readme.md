@@ -1,4 +1,4 @@
-#Jenkins and Python Intergration
+# Jenkins and Python Intergration
 
 I have been tasked to look into using Jenkins as a platform for CI (Continious Intergration), with specific reference to Python, although this in time will also be expanded to ad C and C++.
 
@@ -7,7 +7,7 @@ There are several instalation tutorials on the Net showing you how to install Je
 This is my objective here - to try and show you how to use Jenkins.
 
 
-#The Module
+# The Module
 
 I am going to be using a really really simple Module, so we do not focus on Python code complexity.
 
@@ -68,7 +68,7 @@ nose
 coverage
 ```
 
-##Test 
+## Test 
 
 In case you thought I was done, I created a **test** directory, and inside it I wrote my **extensive** (laughing), test modules.
 
@@ -105,12 +105,12 @@ The whole project structure now looks like this
 ![./img/complete.png](./img/complete.png)
 
 
-#Jenkins Time 
+# Jenkins Time 
 
 I have installed Jenkins on my local machine (a Mac), and have logged in.
 
 
-##Shell Setup
+## Shell Setup
 The first thing I alter is the default shell. I want to use **bash**. This only needs to be done 1 time.
 
   - Jenkins
@@ -122,7 +122,7 @@ The first thing I alter is the default shell. I want to use **bash**. This only 
       ![./img/jenkins_env.png](./img/jenkins_env.png)
 
 
-##New Item
+## New Item
 
 We return to the Jenkins Home, and select **New Item**
 
@@ -170,7 +170,7 @@ python setup.py install
 
 Then I press **Save**.
 
-###Understanding the steps
+### Understanding the steps
 
 Firstly understand this *job* runs as a user called Jenkins - unless you have setup a new user account.
 
@@ -196,3 +196,56 @@ If everything worked well ... you will see a Blue Circle, problems/failures will
 
 
 ![./img/jenkins_status.png](./img/jenkins_status.png)
+
+
+## Is that it ?
+
+Maybe yes, maybe no.
+
+What have we proved ?
+
+  - Simply that a user with an Empty Python Environent can install this awesome module.
+
+What have we not proved ?
+  
+  - The tests run as expected
+  - a known percentage of the module is subject to code-coverage
+  
+We will try and address each issue individually.
+
+### The tests run as expected
+
+As we installed  **nose** in a valid python env, we should be able to run
+
+```bash
+(python) bash-3.2$ nosetests MySimpleModule\test\nosetests.py 
+```
+The output should be like this 
+
+```text
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+```
+
+To see a little more info add --verbose
+
+```
+ bash-3.2$ nosetests nosetests.py --verbose
+```
+
+Now produces
+
+```text 
+MySimpleModule.test.nosetests.test_000_init ... ok
+MySimpleModule.test.nosetests.test_010_isin_good ... ok
+MySimpleModule.test.nosetests.test_020_isin_bad ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+```
+
