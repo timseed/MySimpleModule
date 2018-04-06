@@ -249,3 +249,76 @@ Ran 3 tests in 0.001s
 OK
 ```
 
+This alas in not in *Jenkins* format ... but this output is
+
+```bash
+ nosetests --with-xunit --all-modules     \
+    --traverse-namespace --with-coverage  \
+    --cover-inclusive MySimpleModule/test/nosetests.py 
+```
+
+I see the output of 
+
+```text
+...
+Name                               Stmts   Miss  Cover
+------------------------------------------------------
+MySimpleModule/MySimpleModule.py      10      2    80%
+MySimpleModule/__init__.py             1      0   100%
+------------------------------------------------------
+TOTAL                                 11      2    82%
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
+
+```
+
+Also note that this nosetest produces a file called **nosetests.xml** 
+
+#### Jenkins nosetest
+
+As Jenkins is run in a slightly different environment I modify the command to be
+
+```bash
+nosetests --with-xunit --all-modules \
+          --traverse-namespace --with-coverage \
+          $PROJECT/test/nosetests.py \
+          --cover-inclusive \
+          --xunit-file=$WORKSPACE/nosetests.xml
+```
+
+Please note: WORKSPACE is only available from withing Jenkins
+
+When the build runs (assuming it all works) ... you can click on Workspace
+
+and you should see something like
+
+![](./img/jenkins_workspace.png)
+
+We now need to use this xml output.
+
+#### Post Build Step
+
+We now need to add a post build step.
+
+![](./img/jenkins_post.png)
+
+
+We re-build the project (assuming it still passes), we now can 
+
+I think we have resolved the *does it test* issue.
+
+## Code Coverage
+
+The coverage command should be used like this
+
+```bash
+coverage run file_or_module
+coverage xml file_or_module or coverage xml -o /tmp/coverage.xml
+```
+
+This will place a file called coverage.xml in the local folder.
+
+
+
