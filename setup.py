@@ -2,8 +2,8 @@ from setuptools import setup
 
 setup(
     name='MySimpleModule',
-    version='V0.01',
-    packages=['MySimpleModule', 'MySimpleModule.test'],
+    version='V0.02',
+    packages=['MySimpleModule', 'MySimpleModule/test'],
     url='',
     license='',
     author='tim seed',
