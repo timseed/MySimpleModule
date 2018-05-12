@@ -25,7 +25,7 @@ def test_gen_better_lots():
     global cls
     for n in range(1, 4):
         yield report(), True,  "Test {}".format(n), check_this(n),n
-    for n in range(4, 8):
+    for n in range(4, 100):
         yield report(), False, "Test {}".format(n), check_this(n),n
 
 def check_this(n):
